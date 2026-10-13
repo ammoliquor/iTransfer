@@ -1,0 +1,133 @@
+:root{
+    --text:#1c1c1e; --muted:rgba(60,60,67,.62); --accent:#0a84ff; --accent2:#5e5ce6; --danger:#d70015;
+    --glass:rgba(255,255,255,.42); --glass-strong:rgba(255,255,255,.62); --glass-tile:rgba(255,255,255,.34);
+    --rim:rgba(255,255,255,.85); --rim-soft:rgba(255,255,255,.18); --line:rgba(255,255,255,.55);
+    --shadow:0 18px 50px rgba(52,72,140,.22), 0 2px 8px rgba(52,72,140,.10);
+    --bg1:#dbe6ff; --bg2:#f1e4ff; --blob1:#6fb1ff; --blob2:#c58bff; --blob3:#ffb4d1;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --text:#f5f5f7; --muted:rgba(235,235,245,.6); --accent:#4da3ff; --accent2:#7d7aff; --danger:#ff6961;
+      --glass:rgba(40,42,58,.45); --glass-strong:rgba(60,62,84,.6); --glass-tile:rgba(255,255,255,.07);
+      --rim:rgba(255,255,255,.38); --rim-soft:rgba(255,255,255,.06); --line:rgba(255,255,255,.14);
+      --shadow:0 20px 60px rgba(0,0,0,.5), 0 2px 8px rgba(0,0,0,.3);
+      --bg1:#0b1022; --bg2:#1a1030; --blob1:#1f5eff; --blob2:#7b3cff; --blob3:#c2358a;
+    }
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{min-height:100%;background:linear-gradient(160deg,var(--bg1),var(--bg2));background-attachment:fixed}
+  body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px 14px;
+       padding-bottom:max(24px,env(safe-area-inset-bottom));
+       font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",system-ui,"Segoe UI",sans-serif;
+       color:var(--text);-webkit-font-smoothing:antialiased}
+
+  /* drifting colour behind the glass, so there is something to refract */
+  body::before,body::after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(70px);opacity:.75;pointer-events:none}
+  body::before{width:60vmax;height:60vmax;left:-20vmax;top:-18vmax;
+       background:radial-gradient(circle at 30% 30%,var(--blob1),transparent 62%),radial-gradient(circle at 75% 70%,var(--blob2),transparent 60%);
+       animation:drift 26s ease-in-out infinite alternate}
+  body::after{width:52vmax;height:52vmax;right:-18vmax;bottom:-20vmax;
+       background:radial-gradient(circle at 40% 40%,var(--blob3),transparent 62%),radial-gradient(circle at 70% 70%,var(--blob1),transparent 60%);
+       animation:drift 32s ease-in-out infinite alternate-reverse}
+  @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(6vmax,4vmax) scale(1.12)}}
+
+  /* the glass panel */
+  .card,.glass{position:relative;border-radius:34px;
+        background:linear-gradient(145deg,var(--glass-strong),var(--glass) 45%,var(--glass));
+        -webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);
+        border:1px solid var(--line);
+        box-shadow:var(--shadow),inset 0 1px 0 var(--rim),inset 0 -1px 0 var(--rim-soft)}
+  .card{width:min(440px,100%);padding:26px}
+  .glass{padding:22px}
+  /* bright specular rim that catches light on the top-left and bottom-right edges */
+  .card::before,.glass::before,.tile::before,#drop::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+        background:linear-gradient(135deg,var(--rim),transparent 38%,transparent 62%,var(--rim-soft));
+        -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+        mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+
+  h1{margin:0 0 4px;font-size:1.65rem;font-weight:700;letter-spacing:-.02em;word-break:break-all}
+  p{color:var(--muted);line-height:1.45}
+  ul{color:var(--muted);padding-left:20px;word-break:break-all;line-height:1.5}
+
+  /* big upload tile */
+  #drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+        min-height:210px;margin:14px 0 12px;padding:24px;border-radius:26px;text-align:center;cursor:pointer;
+        background:var(--glass-tile);border:1px solid var(--line);
+        box-shadow:inset 0 1px 0 var(--rim),inset 0 0 30px rgba(255,255,255,.12);
+        transition:transform .25s cubic-bezier(.2,.9,.3,1.2),background .2s,box-shadow .2s}
+  #drop *{pointer-events:none}
+  #drop strong{font-size:1.3rem;font-weight:650;letter-spacing:-.015em;margin-top:8px}
+  #drop span{color:var(--muted);font-size:.98rem}
+  #drop .plus{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;color:#fff;
+        background:linear-gradient(160deg,#5eb0ff,var(--accent) 55%,var(--accent2));
+        box-shadow:0 8px 22px rgba(10,132,255,.45),inset 0 1.5px 0 rgba(255,255,255,.65),inset 0 -2px 6px rgba(0,0,60,.25);
+        transition:transform .25s cubic-bezier(.2,.9,.3,1.4)}
+  #drop:hover,#drop.over{background:var(--glass-strong)}
+  #drop:hover .plus{transform:scale(1.07)}
+  #drop.over{transform:scale(1.02);box-shadow:0 0 0 3px rgba(10,132,255,.45),inset 0 1px 0 var(--rim)}
+  #drop:focus-visible,.tile:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid rgba(10,132,255,.6);outline-offset:2px}
+
+  /* secondary glass tile ("Add folders") */
+  .tile{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin:0 0 14px;
+        padding:16px;border:1px solid var(--line);border-radius:22px;cursor:pointer;font:inherit;font-weight:600;
+        color:var(--accent);background:var(--glass-tile);
+        box-shadow:inset 0 1px 0 var(--rim);transition:transform .2s,background .2s}
+  .tile:hover{background:var(--glass-strong)}
+  .tile:active{transform:scale(.98)}
+  .tile svg{flex:none}
+
+  /* chosen files */
+  #list{list-style:none;padding:0;margin:0 0 6px;max-height:160px;overflow:auto;font-size:.92rem;color:var(--text)}
+  #list:empty{display:none}
+  #list li{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 6px;padding:9px 14px;
+        border-radius:16px;background:var(--glass-tile);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--rim-soft)}
+  #list span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+  #list span:last-child{flex:none;color:var(--muted);white-space:nowrap}
+  #list a{display:inline-grid;place-items:center;width:22px;height:22px;margin-left:6px;border-radius:50%;
+        background:rgba(120,120,128,.22);color:var(--text);cursor:pointer;text-decoration:none;line-height:1}
+
+  select,input{width:100%;font:inherit;color:var(--text)}
+  select{-webkit-appearance:none;appearance:none;margin:2px 0 4px;padding:14px 44px 14px 18px;border-radius:18px;
+        border:1px solid var(--line);background-color:var(--glass-tile);cursor:pointer;
+        box-shadow:inset 0 1px 0 var(--rim-soft);
+        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat:no-repeat;background-position:right 18px center}
+  select option{color:#1c1c1e}
+  input{margin:8px 0 0;padding:13px 16px;border-radius:16px;border:1px solid var(--line);background:var(--glass-tile);
+        box-shadow:inset 0 1px 0 var(--rim-soft);font-size:.92rem}
+
+  /* primary action: a glossy glass pill */
+  .btn,button.primary{position:relative;display:block;width:100%;margin-top:14px;padding:16px;border:0;border-radius:999px;
+        font:inherit;font-size:1.05rem;font-weight:650;letter-spacing:-.01em;text-align:center;text-decoration:none;
+        color:#fff;cursor:pointer;
+        background:linear-gradient(180deg,#4fa8ff,var(--accent) 50%,#0a6fe0);
+        box-shadow:0 10px 26px rgba(10,132,255,.42),inset 0 1.5px 0 rgba(255,255,255,.6),inset 0 -2px 8px rgba(0,40,120,.28);
+        transition:transform .2s cubic-bezier(.2,.9,.3,1.3),filter .2s,box-shadow .2s}
+  .btn:hover,button.primary:not(:disabled):hover{filter:brightness(1.06);transform:translateY(-1px)}
+  .btn:active,button.primary:not(:disabled):active{transform:scale(.98)}
+  button:disabled{opacity:.45;cursor:default;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+
+  progress{-webkit-appearance:none;appearance:none;display:block;width:100%;height:10px;margin-top:16px;border:0;border-radius:99px;
+        overflow:hidden;background:rgba(120,120,128,.2);box-shadow:inset 0 1px 2px rgba(0,0,0,.15)}
+  progress[hidden]{display:none}
+  progress::-webkit-progress-bar{background:transparent}
+  progress::-webkit-progress-value{border-radius:99px;transition:width .2s;
+        background:linear-gradient(90deg,#5eb0ff,var(--accent),var(--accent2));box-shadow:0 0 12px rgba(10,132,255,.6)}
+  progress::-moz-progress-bar{border-radius:99px;background:linear-gradient(90deg,#5eb0ff,var(--accent),var(--accent2))}
+
+  #msg{margin:12px 0 0;min-height:1.2em;text-align:center}
+  .err{color:var(--danger);font-weight:500}
+
+  /* browsers that can't blur: stay readable with more solid panels */
+  @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+    :root{--glass:rgba(255,255,255,.88);--glass-strong:rgba(255,255,255,.95);--glass-tile:rgba(255,255,255,.7)}
+    @media (prefers-color-scheme: dark){:root{--glass:rgba(30,32,46,.94);--glass-strong:rgba(44,46,64,.96);--glass-tile:rgba(255,255,255,.1)}}
+  }
+  @media (prefers-reduced-transparency: reduce){
+    .card{-webkit-backdrop-filter:none;backdrop-filter:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    body::before,body::after{animation:none}
+    *{transition:none !important}
+  }
+  @media (max-width:420px){ .card,.glass{border-radius:30px} .card{padding:20px} #drop{min-height:190px} }

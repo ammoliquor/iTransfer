@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>itransfer</title>
+<link rel="stylesheet" href="/static/app.css?v=__V__">
+<link rel="stylesheet" href="/static/gallery.css?v=__V__">
+<body>
+
+<div class="card" id="app">
+  <section id="form">
+    <h1>itransfer</h1>
+    <div id="drop" role="button" tabindex="0">
+      <div class="plus"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      <strong>Upload files</strong>
+      <span>Choose files, or drop files and folders here</span>
+    </div>
+    <button id="pickfolder" class="tile" type="button">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 10.5v5M9.5 13h5"/></svg>
+      Add folders
+    </button>
+    <input id="file" type="file" multiple hidden>
+    <input id="dir" type="file" webkitdirectory hidden>
+    <ul id="list"></ul>
+    <input id="title" type="text" maxlength="100" placeholder="Title (optional)" autocomplete="off">
+    <select id="days">
+      <option value="1">Keep for 1 day</option>
+      <option value="3" selected>Keep for 3 days</option>
+      <option value="7">Keep for 7 days</option>
+    </select>
+    <button id="go" class="primary" disabled>Transfer</button>
+    <progress id="bar" max="100" value="0" hidden></progress>
+    <p id="msg"></p>
+  </section>
+
+  <section id="done" class="done" hidden>
+    <div class="hero-thumb" id="doneThumb">
+      <button class="viewpill" id="doneView" type="button"></button>
+    </div>
+    <h2>You're done!</h2>
+    <p>See the <a class="link" id="openDetails">transfer's details</a>, or share the link below.</p>
+    <div class="linkrow">
+      <input id="doneLink" type="text" readonly>
+      <button id="doneCopyInline" type="button"></button>
+    </div>
+    <button id="doneCopy" class="primary" type="button">Copy link</button>
+    <button id="doneView2" class="primary ghost with-icon" type="button"></button>
+    <button id="another" class="tile" type="button">Send another transfer</button>
+  </section>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="glass sheet" id="sheet" aria-hidden="true">
+  <button class="closer" id="closeSheet" type="button"><span class="icon" id="closeIcon"></span>Close panel</button>
+  <h2 id="sTitle"></h2>
+  <p id="sMeta"></p>
+  <div class="linkrow">
+    <input id="sLink" type="text" readonly>
+    <button id="sCopy" type="button"></button>
+  </div>
+  <div class="rowactions">
+    <a class="act" id="sDownload"></a>
+    <button class="act" id="sPreview" type="button"></button>
+  </div>
+  <div class="stats">
+    <div class="stat"><small>Expiration date</small><strong id="sExpires"></strong></div>
+    <div class="stat"><small>Total downloads</small><strong id="sDownloads">0</strong></div>
+    <div class="stat"><small>Total previews</small><strong id="sPreviews">0</strong></div>
+  </div>
+  <div class="panelcard"><small>Files</small><div id="sGrid"></div></div>
+</aside>
+
+<script src="/static/viewer.js?v=__V__"></script>
+<script>const MAXBYTES = __MAXBYTES__, MAXTEXT = '__MAX__';</script>
+<script src="/static/upload.js?v=__V__"></script>
+</body>
+</html>

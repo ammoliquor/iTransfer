@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__TITLE__</title>
+<link rel="stylesheet" href="/static/app.css?v=__V__">
+<link rel="stylesheet" href="/static/gallery.css?v=__V__">
+<body class="top">
+<main class="wrap">
+  <header class="glass hero">
+    <h1 id="title"></h1>
+    <p class="meta" id="meta"></p>
+    <div class="actions">
+      <button id="open" class="primary with-icon" type="button"></button>
+      <a id="download" class="btn ghost with-icon"></a>
+    </div>
+  </header>
+
+  <section class="glass">
+    <div class="toolbar">
+      <div class="group">
+        <select id="sortkey" aria-label="Sort by">
+          <option value="name">Name</option>
+          <option value="size">Size</option>
+          <option value="type">Type</option>
+        </select>
+        <button id="sortdir" class="icon" type="button" title="Reverse order"></button>
+      </div>
+      <div class="seg" id="modes">
+        <button class="icon" type="button" data-mode="large" title="Large previews" aria-pressed="true"></button>
+        <button class="icon" type="button" data-mode="small" title="Small previews" aria-pressed="false"></button>
+        <button class="icon" type="button" data-mode="list" title="List" aria-pressed="false"></button>
+      </div>
+    </div>
+    <div id="grid"></div>
+  </section>
+</main>
+
+<script type="application/json" id="data">__DATA__</script>
+<script src="/static/viewer.js?v=__V__"></script>
+<script src="/static/transfer.js?v=__V__"></script>
+</body>
+</html>
